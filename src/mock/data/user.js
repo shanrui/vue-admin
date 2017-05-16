@@ -22,4 +22,16 @@ for (let i = 0; i < 86; i++) {
   }));
 }
 
-export { LoginUsers, Users };
+const Discounts = [];
+
+for (let i = 0; i < 86; i++) {
+  Discounts.push(Mock.mock({
+    id: Mock.Random.guid(),
+    info: Mock.Random.cname(),
+    store: Mock.Random.cname(),
+    expire: Mock.Random.date(),
+    state: Mock.Random.integer(0, 1)
+  }));
+}
+
+export { LoginUsers, Users, Discounts };

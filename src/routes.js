@@ -9,6 +9,10 @@ import Page4 from './views/nav2/Page4.vue'
 import Page5 from './views/nav2/Page5.vue'
 import Page6 from './views/nav3/Page6.vue'
 import echarts from './views/charts/echarts.vue'
+import Discount from './views/nav1/Discount.vue'
+import ShippingInfo from './views/nav1/ShippingInfo.vue'
+import PageLog from './views/nav2/PageLog.vue'
+import PageLogURL from './views/nav2/PageLogURL.vue'
 
 let routes = [
     {
@@ -27,25 +31,30 @@ let routes = [
     {
         path: '/',
         component: Home,
-        name: '导航一',
+        name: '信息管理',
         iconCls: 'el-icon-message',//图标样式class
         children: [
             { path: '/main', component: Main, name: '主页', hidden: true },
-            { path: '/table', component: Table, name: 'Table' },
-            { path: '/form', component: Form, name: 'Form' },
-            { path: '/user', component: user, name: '列表' },
+            { path: '/discount', component: Discount, name: '优惠信息' },
+            { path: '/shipping-info', component: ShippingInfo, name: '运费信息' },                     
+            //{ path: '/table', component: Table, name: 'Table' },
+            //{ path: '/form', component: Form, name: 'Form' },
+            //{ path: '/user', component: user, name: '列表' },
         ]
     },
     {
         path: '/',
         component: Home,
-        name: '导航二',
+        name: '访问统计',
         iconCls: 'fa fa-id-card-o',
         children: [
-            { path: '/page4', component: Page4, name: '页面4' },
-            { path: '/page5', component: Page5, name: '页面5' }
+            { path: '/pagelog/pv-uv', component: PageLog, name: 'PV/UV' },
+            { path: '/pagelog/url', component: PageLogURL, name: 'URL' },
+            //{ path: '/page4', component: Page4, name: '页面4' },
+            //{ path: '/page5', component: Page5, name: '页面5' }
         ]
     },
+    /*
     {
         path: '/',
         component: Home,
@@ -65,6 +74,7 @@ let routes = [
             { path: '/echarts', component: echarts, name: 'echarts' }
         ]
     },
+    */
     {
         path: '*',
         hidden: true,

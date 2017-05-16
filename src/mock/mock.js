@@ -1,7 +1,8 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { LoginUsers, Users } from './data/user';
+import { LoginUsers, Users, Discounts } from './data/user';
 let _Users = Users;
+let _Discounts = Discounts
 
 export default {
   /**
@@ -145,6 +146,95 @@ export default {
           resolve([200, {
             code: 200,
             msg: '新增成功'
+          }]);
+        }, 500);
+      });
+    });
+
+    //获取优惠列表（分页）
+    mock.onGet('/discount/listpage').reply(config => {
+      let {page, name} = config.params;
+      let mockDiscounts = _Discounts.filter(user => {
+        if (name && user.name.indexOf(name) == -1) return false;
+        return true;
+      });
+      let total = mockDiscounts.length;
+      mockDiscounts = mockDiscounts.filter((u, index) => index < 20 * page && index >= 20 * (page - 1));
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            total: total,
+            discounts: mockDiscounts
+          }]);
+        }, 1000);
+      });
+    });
+
+    //新增优惠信息
+    mock.onGet('/discount/add').reply(config => {
+      let { sotre, expire, state, info} = config.params;
+      _Discounts.push({
+        info: info,
+        store: sotre,
+        expire: expire,
+        state: state
+      });
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            code: 200,
+            msg: '新增成功'
+          }]);
+        }, 500);
+      });
+    });
+
+    //编辑优惠信息
+    mock.onGet('/discount/edit').reply(config => {
+      let { id, sotre, expire, state, info} = config.params;
+      _Discounts.some(u => {
+        if (u.id === id) {
+          u.sotre = sotre;
+          u.info = info;
+          u.expire = expire;
+          u.state = state;
+          return true;
+        }
+      });
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            code: 200,
+            msg: '编辑成功'
+          }]);
+        }, 500);
+      });
+    });
+
+    //删除优惠信息
+    mock.onGet('/discount/remove').reply(config => {
+      let { id } = config.params;
+      _Discounts = _Discounts.filter(u => u.id !== id);
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            code: 200,
+            msg: '删除成功'
+          }]);
+        }, 500);
+      });
+    });
+
+    //批量删除优惠信息
+    mock.onGet('/discount/batchremove').reply(config => {
+      let { ids } = config.params;
+      ids = ids.split(',');
+      _Discounts = _Discounts.filter(u => !ids.includes(u.id));
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            code: 200,
+            msg: '删除成功'
           }]);
         }, 500);
       });

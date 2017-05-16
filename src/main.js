@@ -10,9 +10,11 @@ import Vuex from 'vuex'
 //import NProgress from 'nprogress'
 //import 'nprogress/nprogress.css'
 import routes from './routes'
-import Mock from './mock'
-Mock.bootstrap();
+//import Mock from './mock'
+//Mock.bootstrap();
 import 'font-awesome/css/font-awesome.min.css'
+
+import axios from 'axios';
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)
@@ -30,11 +32,15 @@ router.beforeEach((to, from, next) => {
     sessionStorage.removeItem('user');
   }
   let user = JSON.parse(sessionStorage.getItem('user'));
+  if(user && user.token){
+    axios.defaults.headers.common['token'] = user.token;
+  }
   if (!user && to.path != '/login') {
     next({ path: '/login' })
   } else {
     next()
   }
+
 })
 
 //router.afterEach(transition => {
